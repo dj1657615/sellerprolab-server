@@ -80,14 +80,15 @@ public class updater extends JFrame implements MouseMotionListener, MouseListene
 	int startY;
 
 	JLabel mainArea;
+	
 	JLabel text;
 	Thread checkModule;
+	
 	JProgressBar progressBar;
 	Border border;
 
 	String pVersion;
 	String cVersion;
-	
 	
 	String chromeZip = "chromedriver_win32.zip";
 	String updaterZip = "lately.zip";
@@ -138,7 +139,7 @@ public class updater extends JFrame implements MouseMotionListener, MouseListene
 		}
 		
 		
-		unzip(chromeZip, tVersion);
+		unzip(chromeZip, null);
 		cleanupZip();
 		
 	}
@@ -577,11 +578,10 @@ public class updater extends JFrame implements MouseMotionListener, MouseListene
 
 	public void saveLatelyVersion() {
 		try {
-			OutputStream output = new FileOutputStream("readme.txt");
+			OutputStream output = new FileOutputStream("sellversion.lab");
 			JsonObject out = new JsonObject();
 			
 			out.addProperty("version", pVersion);
-			out.addProperty("chrome", cVersion);
 			System.out.println(out);
 			byte[] by = out.toString().getBytes();
 			output.write(by);
@@ -591,13 +591,13 @@ public class updater extends JFrame implements MouseMotionListener, MouseListene
 			e.getStackTrace();
 		}
 	}
-
+	
 	public String currentVersion() {
 
 		try {
 			// set the properties value
 			// ���� ��ü ����
-			File file = new File("readme.txt");
+			File file = new File("sellversion.lab");
 			// �Է� ��Ʈ�� ����
 			FileReader filereader = new FileReader(file);
 			int singleCh = 0;
@@ -608,9 +608,7 @@ public class updater extends JFrame implements MouseMotionListener, MouseListene
 			filereader.close();
 			JsonParser parser = new JsonParser();
 			JsonObject respone = (JsonObject) parser.parse(temp);
-			
-			cVersion =respone.get("chrome").isJsonNull() ? "100" : respone.get("chrome").getAsString() ;
-			
+		
 			return (respone.get("version").isJsonNull()?"0.00001" :  respone.get("version").getAsString() );
 
 		} catch (FileNotFoundException e) {
